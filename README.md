@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://zenodo.org/records/17007181">
-    <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17007181.svg" alt="DOI">
+  <a href="https://doi.org/10.5281/zenodo.17638228">
+    <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17638228.svg" alt="DOI">
   </a>
 </p>
 
@@ -74,18 +74,18 @@ please cite the model as follows:
 **Short citation (recommended):**
 
 > Kousoulos, E. et al. (2025). *The Africa–Europe Energy Transition OSeMOSYS (AETOS) Model:
-> A Multi-Country Framework for Cross-Continental Energy Trade.* Zenodo.
-> https://doi.org/10.5281/zenodo.17007181
+> A Multi-Country Framework for Cross-Continental Energy Trade.* Zenodo.  
+> https://doi.org/10.5281/zenodo.17638228
 
 **BibTeX:**
 
 ```bibtex
 @software{AETOS_2025,
   author       = {Kousoulos, Elias and collaborators},
-  title        = {The Africa–Europe Energy Transition OSeMOSYS (AETOS) Model:
+  title        = {The Africa--Europe Energy Transition OSeMOSYS (AETOS) Model:
                    A Multi-Country Framework for Cross-Continental Energy Trade},
   year         = {2025},
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.17007181},
-  url          = {https://doi.org/10.5281/zenodo.17007181},
+  doi          = {10.5281/zenodo.17638228},
+  url          = {https://doi.org/10.5281/zenodo.17638228},
 }
