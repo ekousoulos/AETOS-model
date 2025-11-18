@@ -1,0 +1,28 @@
+#Transforming data (xlsx->txt)
+otoole convert excel csv input_data/AETOS_UNNZ20251016.xlsx CSVFiles config_otoole_v4_AETOS.yaml
+otoole convert csv datafile CSVFiles output_data/AETOS_UNNZ20251016.txt config_otoole_v4_AETOS.yaml
+
+#Running GLPK to generate lp file
+glpsol -m model/osemosys_fast_v9_AETOS.txt -d output_data/AETOS_UNNZ20251016.txt --wlp results/results.lp --check
+
+#Running Cplex
+cplex
+read
+results/results.lp
+optimize
+write
+results/results.sol
+y
+quit
+
+#Transforming & Sorting Results
+python scripts/transform_31072013.py results/results.sol results/trans_results.txt
+sort results/trans_results.txt > results/trans_results_sorted.txt
+
+#Exportign Results to excel
+python scripts/export_to_excel.py
+
+#Visualising results
+python scripts/totalcapnorm.py results/20251017_UNNZv1.csv UNNZ
+python scripts/totalactnorm.py results/20251017_UNNZv1.csv UNNZ
+

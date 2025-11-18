@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>AETOS Banner — Montserrat Font</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;800&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#02283d; }
+  html, body { margin:0; background:transparent; }
+  
+  .banner {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    background:
+      radial-gradient(900px 240px at 78% 25%, rgba(255,255,255,0.18), transparent 60%),
+      linear-gradient(130deg, #02283d 0%, #79b82a 73%, #f1b603 100%);
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: #02283d;
+  }
+  canvas {
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    background:transparent; pointer-events:auto;
+    display:block; z-index:1;
+  }
+  .title {
+    position:absolute; inset:0;
+    display:flex; align-items:flex-end; /* moves it to bottom */
+	padding-bottom: 28px; /* adjust spacing from bottom */
+    padding-left: clamp(24px, 6vw, 60px);
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 4vw, 46px);
+    line-height: 1.1;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.35);
+    letter-spacing:-0.02em;
+    z-index:2; pointer-events:none; user-select:none;
+  }
+</style>
+</head>
+<body>
+<div class="banner" id="banner">
+  <canvas id="net"></canvas>
+  <div class="title">AETOS Documentation</div>
+</div>
+
+<script>
+(() => {
+  const wrap = document.getElementById('banner');
+  const canvas = document.getElementById('net');
+  const ctx = canvas.getContext('2d', { alpha:true });
+  ctx.lineCap='round'; ctx.lineJoin='round';
+
+  let W=0,H=0,DPR=1, LINK=100, COUNT=55, PAD=7;
+  function fit(){
+    const r = wrap.getBoundingClientRect();
+    W = Math.max(1, Math.round(r.width));
+    H = Math.max(1, Math.round(r.height));
+    DPR = (window.devicePixelRatio || 1) * 1.5;  // ↑ from 1.5 to 2 → ultra crisp
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(H * DPR);
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    ctx.imageSmoothingEnabled = true;
+	ctx.imageSmoothingQuality = "high";
+    LINK = Math.max(80, Math.min(W, H) * 0.18);
+  }
+  new ResizeObserver(fit).observe(wrap); fit();
+
+  const HEARTBEAT_RATE=0.5, HEARTBEAT_SHAPE=0.7, HEARTBEAT_MIN=0.12, HEARTBEAT_MAX=1.0;
+  const pts=[];
+  function init(){
+    pts.length=0;
+    for(let i=0;i<COUNT;i++){
+      const a=Math.random()*Math.PI*2;
+      const speed=0.10+Math.random()*0.18;
+      const base=1.0+Math.random()*1.8;
+      pts.push({
+        x: PAD + Math.random()*(W-2*PAD),
+        y: PAD + Math.random()*(H-2*PAD),
+        vx: Math.cos(a)*speed,
+        vy: Math.sin(a)*speed,
+        r0: base, r: base,
+        phase: Math.random()*Math.PI*2,
+        bpm: 0.28+Math.random()*0.26
+      });
+    }
+  }
+  init();
+
+  let lastW=W;
+  new ResizeObserver(()=>{
+    const r=wrap.getBoundingClientRect();
+    if(Math.abs(r.width-lastW)>40){ lastW=r.width; init(); }
+  }).observe(wrap);
+
+  const mouse={x:-9999,y:-9999};
+  canvas.addEventListener('mousemove',(e)=>{
+    const r=canvas.getBoundingClientRect();
+    mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
+  });
+  canvas.addEventListener('mouseleave',()=>{mouse.x=-9999;mouse.y=-9999;});
+
+  function heartbeat(p,t){
+    const base=0.5+0.5*Math.sin(2*Math.PI*p.bpm*HEARTBEAT_RATE*t+p.phase);
+    const shaped=Math.pow(base,HEARTBEAT_SHAPE);
+    return HEARTBEAT_MIN+(HEARTBEAT_MAX-HEARTBEAT_MIN)*shaped;
+  }
+
+  function step(p){
+    p.x+=p.vx; p.y+=p.vy;
+    if (p.x < PAD)         { p.x = PAD;         p.vx = Math.abs(p.vx); }
+    if (p.x > W - PAD)     { p.x = W - PAD;     p.vx = -Math.abs(p.vx); }
+    if (p.y < PAD)         { p.y = PAD;         p.vy = Math.abs(p.vy); }
+    if (p.y > H - PAD)     { p.y = H - PAD;     p.vy = -Math.abs(p.vy); }
+
+    const dx=p.x-mouse.x, dy=p.y-mouse.y, d=Math.hypot(dx,dy), R=80;
+    if(d<R){ const k=1-d/R; p.r=Math.min(4.0,p.r0+2.0*k); if(d>0){ p.x+=(dx/d)*0.20; p.y+=(dy/d)*0.20; } }
+    else { p.r += (p.r0-p.r)*0.12; }
+  }
+
+  /* --- Ultra-HD Optimized Lines --- */
+  function drawLinks(t){
+    const invDPR = 1 / DPR;
+    ctx.save();
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+
+    for(let i=0;i<pts.length;i++){
+      const p1 = pts[i];
+      for(let j=i+1;j<pts.length;j++){
+        const p2 = pts[j];
+        const dx = p1.x - p2.x, dy = p1.y - p2.y, d2 = dx*dx + dy*dy;
+        if(d2 < LINK*LINK){
+          const d = Math.sqrt(d2);
+          const a = 1 - d/LINK;
+          const pulse = (heartbeat(p1,t)+heartbeat(p2,t))*0.5;
+
+          ctx.strokeStyle = `rgba(255,255,255,${0.10*a*pulse})`;
+          ctx.lineWidth = 1.6 * invDPR;   // slightly thinner, scales with DPR
+          ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+
+          ctx.strokeStyle = `rgba(255,255,255,${0.75*a*pulse})`;
+          ctx.lineWidth = 0.8 * invDPR;
+          ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+        }
+      }
+    }
+    ctx.restore();
+  }
+
+  function drawDots(t){
+    for(const p of pts){
+      const pulse=heartbeat(p,t);
+      ctx.fillStyle=`rgba(255,255,255,${Math.min(1,pulse*1.1)})`;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+
+      ctx.fillStyle=`rgba(255,255,255,${0.08*pulse})`;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r*2.1,0,Math.PI*2); ctx.fill();
+    }
+  }
+
+  function frame(now){
+    ctx.clearRect(0,0,W,H);
+    const t=now/1000; drawLinks(t); drawDots(t);
+    for(const p of pts) step(p);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
