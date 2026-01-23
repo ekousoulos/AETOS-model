@@ -58,7 +58,7 @@ investments, decarbonization strategy, and energy-security assessment across
 
 Full documentation is available on ReadTheDocs:
 
-📘 https://aetos.readthedocs.io
+📘 https://aetos-model.readthedocs.io/en/latest/
 
 > The documentation includes methodology, parameter sources,
 > techno-economic assumptions, datasets, trade structure, scenario definitions,
