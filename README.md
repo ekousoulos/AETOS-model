@@ -71,23 +71,41 @@ Full documentation is available on ReadTheDocs:
 ## How to Cite
 
 If you use **AETOS** in academic publications, analyses, reports, or presentations,
-please cite the model as follows:
+please cite the following article. If you use the archived model files, please
+also cite the specific Zenodo release used.
 
-**Short citation (recommended):**
+**Article citation:**
 
-> Kousoulos, E. et al. (2025). *The Africa–Europe Energy Transition OSeMOSYS (AETOS) Model:
-> A Multi-Country Framework for Cross-Continental Energy Trade.* Zenodo.  
-> https://doi.org/10.5281/zenodo.17638228
+> Kousoulos-Kovachian, E., Taliotis, C., Zachariadis, T., Fattahi, A.,
+> Dalla Longa, F., van der Linden, M., & van der Zwaan, B. (2026).
+> Energy trade across Africa and Europe: Long-term national investment and
+> infrastructure pathways for electricity and natural gas.
+> *Energy Reports, 16*, 109781.
+> https://doi.org/10.1016/j.egyr.2026.109781
 
 **BibTeX:**
 
 ```bibtex
-@software{AETOS_2025,
-  author       = {Kousoulos, Elias and collaborators},
-  title        = {The Africa--Europe Energy Transition OSeMOSYS (AETOS) Model:
-                   A Multi-Country Framework for Cross-Continental Energy Trade},
-  year         = {2025},
-  publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.17638228},
-  url          = {https://doi.org/10.5281/zenodo.17638228},
+@article{KousoulosKovachian2026AETOS,
+  author  = {Kousoulos-Kovachian, Elias and Taliotis, Constantinos
+             and Zachariadis, Theodoros and Fattahi, Amir
+             and Dalla Longa, Francesco and van der Linden, Mobi
+             and van der Zwaan, Bob},
+  title   = {Energy trade across {Africa} and {Europe}: Long-term
+             national investment and infrastructure pathways
+             for electricity and natural gas},
+  journal = {Energy Reports},
+  volume  = {16},
+  pages   = {109781},
+  year    = {2026},
+  doi     = {10.1016/j.egyr.2026.109781},
+  url     = {https://doi.org/10.1016/j.egyr.2026.109781}
+}
+```
+
+**Archived model release (Zenodo):**
+
+https://doi.org/10.5281/zenodo.17638228
+
+Use the citation exported from the Zenodo record for the version you use.
 }
