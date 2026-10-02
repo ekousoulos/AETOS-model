@@ -10,10 +10,12 @@
 
 <p align="center">
   <a href="https://doi.org/10.5281/zenodo.17638228">
-    <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17638228.svg" alt="DOI">
+    <img src="https://zenodo.org/badge/DOI/10.5281/zenodo.17638228.svg" alt="Zenodo DOI">
+  </a>
+  <a href="https://doi.org/10.1016/j.egyr.2026.109781">
+    <img src="https://img.shields.io/badge/Article_DOI-10.1016%2Fj.egyr.2026.109781-blue" alt="Article DOI">
   </a>
 </p>
-
 
 ---
 
